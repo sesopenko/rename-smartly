@@ -1,0 +1,40 @@
+name: Build .deb Package
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger only on version tags like v1.0, v1.1
+  workflow_dispatch:  # Manual run option
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            python3 python3-pip \
+            python3-gi gir1.2-gtk-3.0 \
+            libglib2.0-dev libgirepository1.0-dev \
+            build-essential fakeroot dh-make devscripts
+
+      - name: Build .deb
+        run: |
+          make build-deb
+
+      - name: Rename .deb to include version
+        run: |
+          VERSION="${GITHUB_REF##*/}"
+          mv rename-smartly_1.0.deb rename-smartly_${VERSION#v}_all.deb
+
+      - name: Upload release artifact
+        uses: softprops/action-gh-release@v1
+        with:
+          files: rename-smartly_*.deb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
