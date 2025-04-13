@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Rename Smartly
+Exec=rename-smartly
+Icon=edit-find-replace
+Terminal=false
+Categories=Utility;
+MimeType=inode/directory;
