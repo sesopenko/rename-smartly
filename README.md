@@ -16,7 +16,7 @@ shows, logs, images, or any structured filenames.
 
 ---
 
-## ✨ How It Works
+## How It Works
 
 1. **Select a folder** using the "Open Folder" button.
 2. **Enter a regular expression (regex)** in the pattern input field.
@@ -24,7 +24,7 @@ shows, logs, images, or any structured filenames.
 4. Click **Preview** to see what the files will be renamed to.
 5. Click **Rename** to apply the changes.
 
-### 🧪 Example
+### Example
 
 #### Regex:
 
@@ -67,7 +67,7 @@ right-clicking folders in Nautilus.
 
 ---
 
-## 🛠️ Dev Dependencies
+## Dev Dependencies
 
 Developed on **Debian 12**. To build or run from source:
 
@@ -82,7 +82,7 @@ sudo apt install -y \
 
 ---
 
-## 🚀 Runtime Dependencies (for end users)
+## Runtime Dependencies (for end users)
 
 To run the app on **Debian 12**, make sure the following are installed:
 
@@ -94,13 +94,13 @@ These packages provide the GTK bindings needed for the graphical interface.
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the [GNU General Public License v3.0](LICENSE.txt).
 
 ---
 
-## ©️ Copyright
+## Copyright
 
 © Sean Esopenko 2025
 
