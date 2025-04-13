@@ -1,10 +1,19 @@
 # Rename Smartly
 
-**Rename Smartly** is a simple, fast, and user-friendly desktop app for batch-renaming files in a folder using regular expressions and replacement patterns.
+**Rename Smartly** is a simple, fast, and user-friendly desktop app for batch-renaming files in a folder using regular
+expressions and replacement patterns.
 
-It provides a graphical interface that shows a live preview of how your files will be renamed. Ideal for renaming TV shows, logs, images, or any structured filenames.
+It provides a graphical interface that shows a live preview of how your files will be renamed. Ideal for renaming TV
+shows, logs, images, or any structured filenames.
 
 ![](docs/screenshot.png)
+---
+
+## Requirements
+
+* Debian based linux (Ubuntu/Debian)
+* Python 3.11 or later
+
 ---
 
 ## ✨ How It Works
@@ -42,6 +51,20 @@ S02E05.mkv
 ```
 
 > Files that do **not match** the regex will be listed, but left unchanged (shown with an empty "Renamed To" column).
+
+---
+
+### Nautilus Integration
+
+When installed via the deb pressing the "Install Nautilus Script" button will add a script to
+`~/.local/share/nautilus/scripts/Rename\ Smartly`. This enables a Scripts -> Rename Smartly context menu when
+right-clicking folders in Nautilus.
+
+## Installation
+
+1. Download deb from [Releases](https://github.com/sesopenko/rename-smartly/releases)
+2. `sudo dpkg -i rename-smartly_<version>_all.deb` ie: `sudo dpkg -i rename_smartly_1.1_all.deb`
+3.
 
 ---
 

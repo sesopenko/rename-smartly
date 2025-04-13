@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Remove the Nautilus script from all users' home directories
+for home in /home/*; do
+    if [ -d "$home/.local/share/nautilus/scripts" ]; then
+        script="$home/.local/share/nautilus/scripts/Rename Smartly"
+        if [ -f "$script" ]; then
+            rm -f "$script"
+            echo "Removed Nautilus script from $script"
+        fi
+    fi
+done
+
+# Update desktop database after removing the .desktop entry
+if command -v update-desktop-database >/dev/null 2>&1; then
+    update-desktop-database /usr/share/applications/
+fi

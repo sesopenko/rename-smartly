@@ -20,6 +20,7 @@ prepare-deb:
 	cp deb/usr/share/doc/rename-smartly/* $(DEB_DIR)/usr/share/doc/rename-smartly/
 	chmod +x $(DEB_DIR)/usr/share/doc/rename-smartly/nautilus-script
 	cp deb/DEBIAN/* $(DEB_DIR)/DEBIAN/
+	chmod +x $(DEB_DIR)/DEBIAN/postrm
 	cp deb/usr/share/applications/rename-smartly.desktop $(DEB_DIR)/usr/share/applications/
 	chmod 644 $(DEB_DIR)/usr/share/applications/rename-smartly.desktop
 	echo "Copied $(PY_SRC) to $(PY_DST)"
