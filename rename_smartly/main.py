@@ -50,6 +50,12 @@ class RenameSmartlyApp(Gtk.Window):
             column = Gtk.TreeViewColumn(title, renderer, text=i)
             self.tree_view.append_column(column)
 
+        self.github_link = Gtk.Label()
+        self.github_link.set_markup(
+            '<a href="https://github.com/sesopenko/rename-smartly">GitHub: sesopenko/rename-smartly</a>'
+        )
+        self.github_link.set_xalign(0)
+
         self.preview_button = Gtk.Button(label="Preview")
         self.preview_button.connect("clicked", self.on_preview)
 
@@ -67,6 +73,8 @@ class RenameSmartlyApp(Gtk.Window):
         box.pack_start(self.preview_button, False, False, 0)
         box.pack_start(self.rename_button, False, False, 0)
         box.pack_start(self.tree_view, True, True, 0)
+        box.pack_start(self.github_link, False, False, 6)
+
         self.add(box)
 
     def on_open_folder(self, button):
