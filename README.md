@@ -11,7 +11,7 @@ shows, logs, images, or any structured filenames.
 
 ## Requirements
 
-* Debian based linux (Ubuntu/Debian)
+* Debian based linux (deb tested on Debian 12 amd64)
 * Python 3.11 or later
 
 ---
@@ -64,7 +64,6 @@ right-clicking folders in Nautilus.
 
 1. Download deb from [Releases](https://github.com/sesopenko/rename-smartly/releases)
 2. `sudo dpkg -i rename-smartly_<version>_all.deb` ie: `sudo dpkg -i rename_smartly_1.1_all.deb`
-3.
 
 ---
 
