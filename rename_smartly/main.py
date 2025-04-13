@@ -77,6 +77,9 @@ class RenameSmartlyApp(Gtk.Window):
 
         self.add(box)
 
+        if folder != None:
+            self.on_preview(None)
+
     def on_open_folder(self, button):
         dialog = Gtk.FileChooserDialog(
             title="Select Folder",
@@ -143,12 +146,20 @@ class RenameSmartlyApp(Gtk.Window):
         dialog.destroy()
 
 def main():
-    folder = sys.argv[1] if len(sys.argv) > 1 else None
+    folder = None
+    if len(sys.argv) > 1:
+        candidate = Path(sys.argv[1])
+        if candidate.is_dir():
+            folder = candidate
+        else:
+            print(f"Warning: '{sys.argv[1]}' is not a valid directory. Opening Home instead.")
+
     app = RenameSmartlyApp(folder)
     app.connect("destroy", Gtk.main_quit)
     app.show_all()
     app.present()
     Gtk.main()
+
 
 if __name__ == "__main__":
     main()
