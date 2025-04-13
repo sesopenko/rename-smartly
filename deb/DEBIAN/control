@@ -6,4 +6,4 @@ Architecture: all
 Depends: python3, python3-gi, gir1.2-gtk-3.0
 Maintainer: Sean Esopenko <you@example.com>
 Description: Rename Smartly - Regex-based file renaming tool
- A simple GTK app to rename files in bulk using regex capture groups and rename templates.
+ A simple GTK app to rename files in bulk using regex capture groups and rename templates. Integrates with Nautilus via Nautilus Script.

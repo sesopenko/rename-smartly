@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Only use the first selected folder
+folder="$1"
+
+# Call the installed app
+rename-smartly "$folder"

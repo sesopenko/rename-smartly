@@ -12,11 +12,14 @@ prepare-deb:
 	mkdir -p $(DEB_DIR)/usr/lib/rename-smartly
 	mkdir -p $(DEB_DIR)/usr/bin
 	mkdir -p $(DEB_DIR)/usr/share/applications
+	mkdir -p $(DEB_DIR)/usr/share/doc/rename-smartly
 	mkdir -p $(DEB_DIR)/DEBIAN
 	cp $(PY_SRC) $(PY_DST)
 	cp deb/usr/bin/rename-smartly $(DEB_DIR)/usr/bin/
 	chmod +x $(DEB_DIR)/usr/bin/rename-smartly
-	cp deb/DEBIAN/control $(DEB_DIR)/DEBIAN/
+	cp deb/usr/share/doc/rename-smartly/* $(DEB_DIR)/usr/share/doc/rename-smartly/
+	chmod +x $(DEB_DIR)/usr/share/doc/rename-smartly/nautilus-script
+	cp deb/DEBIAN/* $(DEB_DIR)/DEBIAN/
 	cp deb/usr/share/applications/rename-smartly.desktop $(DEB_DIR)/usr/share/applications/
 	chmod 644 $(DEB_DIR)/usr/share/applications/rename-smartly.desktop
 	echo "Copied $(PY_SRC) to $(PY_DST)"
@@ -29,3 +32,4 @@ build-deb: prepare-deb
 clean:
 	@echo "Cleaning up..."
 	rm -rf $(DEB_DIR)
+	rm $(DEB_FILE)

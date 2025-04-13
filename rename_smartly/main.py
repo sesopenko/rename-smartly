@@ -56,6 +56,9 @@ class RenameSmartlyApp(Gtk.Window):
         )
         self.github_link.set_xalign(0)
 
+        self.install_script_button = Gtk.Button(label="Install Nautilus Script")
+        self.install_script_button.connect("clicked", self.on_install_nautilus_script)
+
         self.preview_button = Gtk.Button(label="Preview")
         self.preview_button.connect("clicked", self.on_preview)
 
@@ -73,7 +76,9 @@ class RenameSmartlyApp(Gtk.Window):
         box.pack_start(self.preview_button, False, False, 0)
         box.pack_start(self.rename_button, False, False, 0)
         box.pack_start(self.tree_view, True, True, 0)
+
         box.pack_start(self.github_link, False, False, 6)
+        box.pack_start(self.install_script_button, False, False, 0)
 
         self.add(box)
 
@@ -134,6 +139,20 @@ class RenameSmartlyApp(Gtk.Window):
         self.file_list.clear()
         self.on_preview(None)
 
+    def on_install_nautilus_script(self, button):
+        target_dir = Path.home() / ".local/share/nautilus/scripts"
+        target_dir.mkdir(parents=True, exist_ok=True)
+
+        source = Path("/usr/share/doc/rename-smartly/nautilus-script")
+        target = target_dir / "Rename Smartly"
+
+        try:
+            target.write_bytes(source.read_bytes())
+            target.chmod(0o755)
+            self.show_message("Nautilus script installed to:\n" + str(target))
+        except Exception as e:
+            self.show_error(f"Failed to install Nautilus script:\n{e}")
+
     def show_error(self, message):
         dialog = Gtk.MessageDialog(
             transient_for=self,
@@ -144,6 +163,18 @@ class RenameSmartlyApp(Gtk.Window):
         )
         dialog.run()
         dialog.destroy()
+
+    def show_message(self, message):
+        dialog = Gtk.MessageDialog(
+            transient_for=self,
+            flags=0,
+            message_type=Gtk.MessageType.INFO,
+            buttons=Gtk.ButtonsType.OK,
+            text=message,
+        )
+        dialog.run()
+        dialog.destroy()
+
 
 def main():
     folder = None
