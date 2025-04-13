@@ -1,0 +1,123 @@
+import gi
+import re
+import os
+import sys
+from pathlib import Path
+
+gi.require_version("Gtk", "3.0")
+from gi.repository import Gtk
+
+class RenameSmartlyApp(Gtk.Window):
+    def __init__(self, folder=None):
+        super().__init__(title="Rename Smartly")
+        self.set_border_width(10)
+        self.set_default_size(600, 400)
+
+        self.folder = Path(folder) if folder else Path.home()
+
+        self.open_button = Gtk.Button(label="Open Folder")
+        self.open_button.connect("clicked", self.on_open_folder)
+
+        self.regex_entry = Gtk.Entry()
+        self.regex_entry.set_placeholder_text("Regex pattern (e.g. .*S(\\d+)E(\\d+).*.mkv)")
+
+        self.target_entry = Gtk.Entry()
+        self.target_entry.set_placeholder_text("Rename pattern (e.g. S$1E$2.mkv)")
+
+        self.file_list = Gtk.ListStore(str, str)
+        self.tree_view = Gtk.TreeView(model=self.file_list)
+
+        for i, title in enumerate(["Original Name", "Renamed To"]):
+            renderer = Gtk.CellRendererText()
+            column = Gtk.TreeViewColumn(title, renderer, text=i)
+            self.tree_view.append_column(column)
+
+        self.preview_button = Gtk.Button(label="Preview")
+        self.preview_button.connect("clicked", self.on_preview)
+
+        self.rename_button = Gtk.Button(label="Rename")
+        self.rename_button.connect("clicked", self.on_rename)
+
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        box.pack_start(self.open_button, False, False, 0)
+        box.pack_start(self.regex_entry, False, False, 0)
+        box.pack_start(self.target_entry, False, False, 0)
+        box.pack_start(self.preview_button, False, False, 0)
+        box.pack_start(self.rename_button, False, False, 0)
+        box.pack_start(self.tree_view, True, True, 0)
+        self.add(box)
+
+    def on_open_folder(self, button):
+        dialog = Gtk.FileChooserDialog(
+            title="Select Folder",
+            parent=self,
+            action=Gtk.FileChooserAction.SELECT_FOLDER,
+            buttons=(
+                Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                Gtk.STOCK_OPEN, Gtk.ResponseType.OK,
+            )
+        )
+
+        response = dialog.run()
+        if response == Gtk.ResponseType.OK:
+            self.folder = Path(dialog.get_filename())
+            self.on_preview(None)
+
+        dialog.destroy()
+
+    def on_preview(self, button):
+        self.file_list.clear()
+        regex = self.regex_entry.get_text()
+        target = self.target_entry.get_text()
+
+        try:
+            pattern = re.compile(regex)
+        except re.error as e:
+            self.show_error(f"Invalid regex: {e}")
+            return
+
+        files = sorted([f for f in self.folder.iterdir() if f.is_file()], key=lambda f: f.name.lower())
+
+        for file in files:
+            match = pattern.match(file.name)
+            if match:
+                new_name = target
+                for i, group in enumerate(match.groups(), 1):
+                    new_name = new_name.replace(f"${i}", group)
+                self.file_list.append([file.name, new_name])
+            else:
+                self.file_list.append([file.name, ""])
+
+    def on_rename(self, button):
+        for row in self.file_list:
+            original = row[0]
+            new_name = row[1]
+            if not new_name:
+                continue  # Skip files with no rename target
+            src = self.folder / original
+            dst = self.folder / new_name
+            if src != dst:
+                src.rename(dst)
+        self.file_list.clear()
+        self.on_preview(None)
+
+    def show_error(self, message):
+        dialog = Gtk.MessageDialog(
+            transient_for=self,
+            flags=0,
+            message_type=Gtk.MessageType.ERROR,
+            buttons=Gtk.ButtonsType.CLOSE,
+            text=message,
+        )
+        dialog.run()
+        dialog.destroy()
+
+def main():
+    folder = sys.argv[1] if len(sys.argv) > 1 else None
+    app = RenameSmartlyApp(folder)
+    app.connect("destroy", Gtk.main_quit)
+    app.show_all()
+    Gtk.main()
+
+if __name__ == "__main__":
+    main()
