@@ -147,6 +147,7 @@ def main():
     app = RenameSmartlyApp(folder)
     app.connect("destroy", Gtk.main_quit)
     app.show_all()
+    app.present()
     Gtk.main()
 
 if __name__ == "__main__":

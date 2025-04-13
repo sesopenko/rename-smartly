@@ -11,13 +11,14 @@ prepare-deb:
 	@echo "Preparing Debian package directory..."
 	mkdir -p $(DEB_DIR)/usr/lib/rename-smartly
 	mkdir -p $(DEB_DIR)/usr/bin
-	mkdir -p $(DEB_DIR)/usr/share/application
+	mkdir -p $(DEB_DIR)/usr/share/applications
 	mkdir -p $(DEB_DIR)/DEBIAN
 	cp $(PY_SRC) $(PY_DST)
 	cp deb/usr/bin/rename-smartly $(DEB_DIR)/usr/bin/
 	chmod +x $(DEB_DIR)/usr/bin/rename-smartly
 	cp deb/DEBIAN/control $(DEB_DIR)/DEBIAN/
-	cp deb/usr/share/application/rename-smartly.desktop $(DEB_DIR)/usr/share/application/
+	cp deb/usr/share/applications/rename-smartly.desktop $(DEB_DIR)/usr/share/applications/
+	chmod 644 $(DEB_DIR)/usr/share/applications/rename-smartly.desktop
 	echo "Copied $(PY_SRC) to $(PY_DST)"
 
 build-deb: prepare-deb
