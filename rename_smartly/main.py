@@ -10,6 +10,7 @@ from gi.repository import Gtk
 class RenameSmartlyApp(Gtk.Window):
     def __init__(self, folder=None):
         super().__init__(title="Rename Smartly")
+        self.set_title("Rename Smartly")
         self.set_border_width(10)
         self.set_default_size(600, 400)
 
