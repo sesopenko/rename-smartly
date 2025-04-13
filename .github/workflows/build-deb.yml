@@ -33,11 +33,6 @@ jobs:
         run: |
           make build-deb
 
-      - name: Rename .deb to include version
-        run: |
-          VERSION="${GITHUB_REF##*/}"
-          mv rename-smartly_1.0.deb rename-smartly_${VERSION#v}_all.deb
-
       - name: Upload release artifact
         uses: softprops/action-gh-release@v1
         with:
