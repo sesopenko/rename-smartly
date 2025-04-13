@@ -175,3 +175,5 @@ cython_debug/
 
 # project ignores
 rename-smartly_1.0
+
+*.deb
