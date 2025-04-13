@@ -4,6 +4,7 @@
 
 It provides a graphical interface that shows a live preview of how your files will be renamed. Ideal for renaming TV shows, logs, images, or any structured filenames.
 
+![](docs/screenshot.png)
 ---
 
 ## ✨ How It Works
