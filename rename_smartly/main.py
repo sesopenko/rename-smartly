@@ -14,16 +14,33 @@ class RenameSmartlyApp(Gtk.Window):
         self.set_border_width(10)
         self.set_default_size(600, 400)
 
+        self.instructions = Gtk.Label()
+        self.instructions.set_markup(
+            "<b>How to use:</b> Use a regular expression with capture groups.\n"
+            "Use <tt>$1</tt>, <tt>$2</tt>, etc. in the rename pattern to insert matches.\n"
+            "Example: <tt>.*S(\\d+)E(\\d+).*</tt> → <tt>S$1E$2.mkv</tt>"
+        )
+        self.instructions.set_justify(Gtk.Justification.LEFT)
+        self.instructions.set_xalign(0)
+
         self.folder = Path(folder) if folder else Path.home()
 
         self.open_button = Gtk.Button(label="Open Folder")
         self.open_button.connect("clicked", self.on_open_folder)
 
+        # Regex Pattern Label and Entry
+        self.regex_label = Gtk.Label(label="Regex Pattern")
+        self.regex_label.set_xalign(0)
+
         self.regex_entry = Gtk.Entry()
-        self.regex_entry.set_placeholder_text("Regex pattern (e.g. .*S(\\d+)E(\\d+).*.mkv)")
+        self.regex_entry.set_placeholder_text("e.g. .*S(\\d+)E(\\d+).*.mkv")
+
+        # Rename Pattern Label and Entry
+        self.target_label = Gtk.Label(label="Rename Pattern")
+        self.target_label.set_xalign(0)
 
         self.target_entry = Gtk.Entry()
-        self.target_entry.set_placeholder_text("Rename pattern (e.g. S$1E$2.mkv)")
+        self.target_entry.set_placeholder_text("e.g. S$1E$2.mkv")
 
         self.file_list = Gtk.ListStore(str, str)
         self.tree_view = Gtk.TreeView(model=self.file_list)
@@ -40,9 +57,13 @@ class RenameSmartlyApp(Gtk.Window):
         self.rename_button.connect("clicked", self.on_rename)
 
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=6)
+        box.pack_start(self.instructions, False, False, 0)
         box.pack_start(self.open_button, False, False, 0)
+        box.pack_start(self.regex_label, False, False, 0)
         box.pack_start(self.regex_entry, False, False, 0)
+        box.pack_start(self.target_label, False, False, 0)
         box.pack_start(self.target_entry, False, False, 0)
+
         box.pack_start(self.preview_button, False, False, 0)
         box.pack_start(self.rename_button, False, False, 0)
         box.pack_start(self.tree_view, True, True, 0)
