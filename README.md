@@ -1,10 +1,52 @@
-# sesopenko/rename-smartly
+# Rename Smartly
 
-An app for quickly renaming files in a folder.
+**Rename Smartly** is a simple, fast, and user-friendly desktop app for batch-renaming files in a folder using regular expressions and replacement patterns.
 
-## Dev dependencies
+It provides a graphical interface that shows a live preview of how your files will be renamed. Ideal for renaming TV shows, logs, images, or any structured filenames.
 
-Developed on Debian 12
+---
+
+## ✨ How It Works
+
+1. **Select a folder** using the "Open Folder" button.
+2. **Enter a regular expression (regex)** in the pattern input field.
+3. **Define a rename pattern** using `$1`, `$2`, etc., to represent capture groups from the regex.
+4. Click **Preview** to see what the files will be renamed to.
+5. Click **Rename** to apply the changes.
+
+### 🧪 Example
+
+#### Regex:
+
+```
+.*S(\d+)E(\d+).*.mkv
+```
+
+#### Rename Pattern:
+
+```
+S$1E$2.mkv
+```
+
+#### Input File:
+
+```
+Show.Name.S02E05.720p.mkv
+```
+
+#### Result:
+
+```
+S02E05.mkv
+```
+
+> Files that do **not match** the regex will be listed, but left unchanged (shown with an empty "Renamed To" column).
+
+---
+
+## 🛠️ Dev Dependencies
+
+Developed on **Debian 12**. To build or run from source:
 
 ```bash
 sudo apt update
@@ -13,8 +55,29 @@ sudo apt install -y \
   python3-gi gir1.2-gtk-3.0 \
   libglib2.0-dev libgirepository1.0-dev \
   build-essential fakeroot dh-make devscripts
-  
-sudo apt install python3-gi gir1.2-gtk-3.0
-
-
 ```
+
+---
+
+## 🚀 Runtime Dependencies (for end users)
+
+To run the app on **Debian 12**, make sure the following are installed:
+
+```bash
+sudo apt install -y python3 python3-gi gir1.2-gtk-3.0
+```
+
+These packages provide the GTK bindings needed for the graphical interface.
+
+---
+
+## 📄 License
+
+This project is licensed under the [GNU General Public License v3.0](LICENSE.txt).
+
+---
+
+## ©️ Copyright
+
+© Sean Esopenko 2025
+
