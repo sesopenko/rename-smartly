@@ -3,6 +3,10 @@ import re
 import os
 import sys
 from pathlib import Path
+import json
+
+CONFIG_DIR = Path.home() / ".config" / "rename-smartly"
+CONFIG_FILE = CONFIG_DIR / "settings.json"
 
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
@@ -41,6 +45,8 @@ class RenameSmartlyApp(Gtk.Window):
 
         self.target_entry = Gtk.Entry()
         self.target_entry.set_placeholder_text("e.g. S$1E$2.mkv")
+
+        self.load_settings()
 
         self.file_list = Gtk.ListStore(str, str)
         self.tree_view = Gtk.TreeView(model=self.file_list)
@@ -84,7 +90,26 @@ class RenameSmartlyApp(Gtk.Window):
 
         if folder != None:
             self.on_preview(None)
-
+    def load_settings(self):
+        if CONFIG_FILE.exists():
+            try:
+                with CONFIG_FILE.open("r") as f:
+                    data = json.load(f)
+                    self.regex_entry.set_text(data.get("regex_pattern", ""))
+                    self.target_entry.set_text(data.get("rename_pattern", ""))
+            except Exception as e:
+                print(f"Failed to load settings: {e}")
+    def save_settings(self):
+        try:
+            CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+            data = {
+                "regex_pattern": self.regex_entry.get_text(),
+                "rename_pattern": self.target_entry.get_text()
+            }
+            with CONFIG_FILE.open("w") as f:
+                json.dump(data, f)
+        except Exception as e:
+            print(f"Failed to save settings: {e}")
     def on_open_folder(self, button):
         dialog = Gtk.FileChooserDialog(
             title="Select Folder",
@@ -138,6 +163,7 @@ class RenameSmartlyApp(Gtk.Window):
                 src.rename(dst)
         self.file_list.clear()
         self.on_preview(None)
+        self.save_settings()
 
     def on_install_nautilus_script(self, button):
         target_dir = Path.home() / ".local/share/nautilus/scripts"

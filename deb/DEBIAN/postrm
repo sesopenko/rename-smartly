@@ -9,7 +9,24 @@ for home in /home/*; do
             echo "Removed Nautilus script from $script"
         fi
     fi
+
+    # Remove settings file
+    settings="$home/.config/rename-smartly/settings.json"
+    if [ -f "$settings" ]; then
+        rm -f "$settings"
+        echo "Removed settings file from $settings"
+    fi
 done
+
+# Also check root user
+if [ -f "/root/.local/share/nautilus/scripts/Rename Smartly" ]; then
+    rm -f "/root/.local/share/nautilus/scripts/Rename Smartly"
+    echo "Removed Nautilus script from /root"
+fi
+if [ -f "/root/.config/rename-smartly/settings.json" ]; then
+    rm -f "/root/.config/rename-smartly/settings.json"
+    echo "Removed settings file from /root"
+fi
 
 # Update desktop database after removing the .desktop entry
 if command -v update-desktop-database >/dev/null 2>&1; then
